@@ -11,6 +11,7 @@
     <PackageProjectUrl>https://github.com/ChengShaoRong/KissCSV</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

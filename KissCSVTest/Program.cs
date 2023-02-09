@@ -23,6 +23,15 @@ namespace KissCSVTest
             KissCSV.Init("Item.csv", "id");
             //KissCSV.InitWithFileContent("Item.csv", "id", File.ReadAllText("./Item.csv"));//You can load the file by yourself if you need to.
 
+            //Below are file content of 'Item.csv'
+/*
+id,name,maxStack,testSingle,testDouble,testBoolean,testStringList,testIntList,testStringStringDictionary,testIntIntDictionary
+100,"test"" 
+name",8888,0.5,888888888888,true,"Hello world|Hi,RongRong",2|3,aa_b|cc_d,1_2|3_4|5_6
+101,name2,9999,,,,,,
+*/
+
+
             //Final step; get kinds of values from the CSV file.
             Console.WriteLine($"keys={List2String(KissCSV.GetIntListKeys("Item.csv"))}");//output keys=100,101
             Console.WriteLine($"name={KissCSV.GetString("Item.csv", "100", "name")}");//output name=test" \nname

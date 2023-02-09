@@ -656,11 +656,11 @@ namespace KissFramework
         }
 
 
+        public static bool printLogWhenDuplicateCSV = true;
         #region InternalImpl
         static Dictionary<string, KissCSVImpl> mDatas = new Dictionary<string, KissCSVImpl>();
         internal class KissCSVImpl
         {
-            internal static bool printLogWhenDuplicateCSV = true;
             private Dictionary<string, string[]> mData = new Dictionary<string, string[]>();
 
             public KissCSVImpl(string fileName, string columnName, string fileContent)
