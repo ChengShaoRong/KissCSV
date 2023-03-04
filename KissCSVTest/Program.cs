@@ -32,9 +32,9 @@ namespace KissCSVTest
             //First step: define a class
             // e.g. we define class TestCsv
             //Second step: Load it into memory
-            KissCSV<TestCsv>.Load("TestCsv.csv", "id");
+            KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id");
             //final step: Get the data in class by unique key
-            TestCsv csv = KissCSV<TestCsv>.Get("1");
+            TestCsv csv = KissCSV.Get("TestCsv.csv", "1") as TestCsv;
             if (csv != null)//If not exist "1" in columnName "id" will return null.
             {
                 Console.WriteLine($"id={csv.id}");//output id=1

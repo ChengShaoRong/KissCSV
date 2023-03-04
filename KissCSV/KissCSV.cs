@@ -21,9 +21,9 @@ namespace CSharpLike
     /// Dictionary&lt;string,build-in type&gt;
     /// Dictionary&lt;int,build-in type&gt;
     /// </summary>
-    public sealed class KissCSV<T> where T : new()
+    public sealed class KissCSV
     {
-        static Dictionary<string, T> datas = new Dictionary<string, T>();
+        static Dictionary<string, Dictionary<string, object>> datas = new Dictionary<string, Dictionary<string, object>>();
         /// <summary>
         /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
         /// </summary>
@@ -34,10 +34,11 @@ namespace CSharpLike
         /// <param name="keyColumnName3">The third column name in this CSV file, default is null. If this CSV have 3 more columns as unique key, set it not null.</param>
         /// <param name="keyColumnName4">The fourth column name in this CSV file, default is null. If this CSV have 4 more columns as unique key, set it not null.</param>
         /// <returns></returns>
-        public static int Load(string fileName, string keyColumnName, string fileContext = null, string keyColumnName2 = null, string keyColumnName3 = null, string keyColumnName4 = null)
+        public static int Load(Type type, string fileName, string keyColumnName, string fileContext = null, string keyColumnName2 = null, string keyColumnName3 = null, string keyColumnName4 = null)
         {
-            datas.Clear();
-            T csv = new T();
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            datas[fileName] = data;
+            object csv = type.Assembly.CreateInstance(type.FullName);
             if (string.IsNullOrEmpty(fileContext))
             {
                 if (string.IsNullOrEmpty(keyColumnName4))
@@ -97,7 +98,7 @@ namespace CSharpLike
                 }
             }
             List<string> keys = SimpleKissCSV.GetStringListKeys(fileName);
-            Type type = csv.GetType();
+            //Type type = csv.GetType();
             FieldInfo[] fs = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
             Dictionary<FieldInfo, string> fieldInfos = new Dictionary<FieldInfo, string>();
             foreach (var f in fs)
@@ -127,7 +128,7 @@ namespace CSharpLike
 
             foreach (string key in keys)
             {
-                csv = new T();
+                csv = type.Assembly.CreateInstance(type.FullName);
                 try
                 {
                     foreach(var one in fieldInfos)
@@ -146,7 +147,7 @@ namespace CSharpLike
                         else
                             one.Key.SetValue(csv, GetValue(one.Value, strValue));
                     }
-                    datas[key] = csv;
+                    data[key] = csv;
                 }
                 catch (Exception e)
                 {
@@ -154,9 +155,114 @@ namespace CSharpLike
                 }
             }
             SimpleKissCSV.Clear(fileName);
-            Console.WriteLine($"Load \"{fileName}\" done, it have data count : {datas.Count}.");
-            return datas.Count;
+            Console.WriteLine($"Load \"{fileName}\" done, it have data count : {data.Count}.");
+            return data.Count;
         }
+#if _CSHARP_LIKE_
+        /// <summary>
+        /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
+        /// </summary>
+        /// <param name="fileName">File name of the CSV file, will load it from '.\\CSV\\' or '.\\' by 'File.ReadAllText', MUST be unique.</param>
+        /// <param name="keyColumnName">The column name of unique id in this CSV file</param>
+        /// <param name="fileContext">The CSV file conten, if not null, will direct use it, and won't load by fileName, because you may load the CSV file from AssetBundle or Addressables. If null will load from fileName in ".\\CSV\\" or ".\\". Default is null.</param>
+        /// <param name="keyColumnName2">The second column name in this CSV file, default is null. If this CSV have 2 more columns as unique key, set it not null. </param>
+        /// <param name="keyColumnName3">The third column name in this CSV file, default is null. If this CSV have 3 more columns as unique key, set it not null.</param>
+        /// <param name="keyColumnName4">The fourth column name in this CSV file, default is null. If this CSV have 4 more columns as unique key, set it not null.</param>
+        /// <returns></returns>
+        public static int Load(SType type, string fileName, string keyColumnName, string fileContext = null, string keyColumnName2 = null, string keyColumnName3 = null, string keyColumnName4 = null)
+        {
+            UnityEngine.Debug.LogError("Load ");
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            datas[fileName] = data;
+            if (string.IsNullOrEmpty(fileContext))
+            {
+                if (string.IsNullOrEmpty(keyColumnName4))
+                {
+                    if (string.IsNullOrEmpty(keyColumnName3))
+                    {
+                        if (string.IsNullOrEmpty(keyColumnName2))
+                        {
+                            Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"");
+                            SimpleKissCSV.Init(fileName, keyColumnName);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
+                            SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
+                        SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
+                    SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4);
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(keyColumnName4))
+                {
+                    if (string.IsNullOrEmpty(keyColumnName3))
+                    {
+                        if (string.IsNullOrEmpty(keyColumnName2))
+                        {
+                            Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"");
+                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, fileContext);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
+                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, fileContext);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
+                        SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, fileContext);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
+                    SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4, fileContext);
+                }
+            }
+            List<string> keys = SimpleKissCSV.GetStringListKeys(fileName);
+            Dictionary<string, string> memberInfos = new Dictionary<string, string>();
+            SInstance csv = type.New().value as SInstance;
+            foreach (var member in csv.members)
+            {
+                string strShortName = GetShortName(member.Value.type.FullName);
+                if (strShortName != null)
+                    memberInfos.Add(member.Key, strShortName);
+            }
+            foreach (string key in keys)
+            {
+                csv = type.New().value as SInstance;
+                try
+                {
+                    foreach (var one in memberInfos)
+                    {
+                        string strValue = SimpleKissCSV.GetString(fileName, key, one.Key);
+                        csv.members[one.Key].value = GetValue(one.Value, strValue);
+                    }
+                    data[key] = csv;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Load \"{fileName}\" error {e.Message} in key = \"{key}\"! This line will be ignore.");
+                }
+            }
+            SimpleKissCSV.Clear(fileName);
+            Console.WriteLine($"Load \"{fileName}\" done, it have data count : {data.Count}.");
+            return data.Count;
+        }
+#endif
         private static object GetValue(string strFullName, string strValue)
         {
             if (string.IsNullOrEmpty(strValue))
@@ -176,6 +282,45 @@ namespace CSharpLike
                     case "System.Single": return default(float);
                     case "System.Double": return default(double);
                     case "System.DateTime": return default(DateTime);
+                    case "List<System.String>": return new List<string>();
+                    case "List<System.SByte>": return new List<sbyte>();
+                    case "List<System.UInt16>": return new List<ushort>();
+                    case "List<System.UInt32>": return new List<uint>();
+                    case "List<System.UInt64>": return new List<long>();
+                    case "List<System.Byte>": return new List<byte>();
+                    case "List<System.Int16>": return new List<short>();
+                    case "List<System.Int32>": return new List<int>();
+                    case "List<System.Int64>": return new List<long>();
+                    case "List<System.Boolean>": return new List<bool>();
+                    case "List<System.Single>": return new List<float>();
+                    case "List<System.Double>": return new List<double>();
+                    case "List<System.DateTime>": return new List<DateTime>();
+                    case "Dictionary<System.String,System.String>": return new Dictionary<string, string>();
+                    case "Dictionary<System.String,System.SByte>": return new Dictionary<string, sbyte>();
+                    case "Dictionary<System.String,System.UInt16>": return new Dictionary<string, ushort>();
+                    case "Dictionary<System.String,System.UInt32>": return new Dictionary<string, uint>();
+                    case "Dictionary<System.String,System.UInt64>": return new Dictionary<string, long>();
+                    case "Dictionary<System.String,System.Byte>": return new Dictionary<string, byte>();
+                    case "Dictionary<System.String,System.Int16>": return new Dictionary<string, short>();
+                    case "Dictionary<System.String,System.Int32>": return new Dictionary<string, int>();
+                    case "Dictionary<System.String,System.Int64>": return new Dictionary<string, long>();
+                    case "Dictionary<System.String,System.Boolean>": return new Dictionary<string, bool>();
+                    case "Dictionary<System.String,System.Single>": return new Dictionary<string, float>();
+                    case "Dictionary<System.String,System.Double>": return new Dictionary<string, double>();
+                    case "Dictionary<System.String,System.DateTime>": return new Dictionary<string, DateTime>();
+                    case "Dictionary<System.Int32,System.String>": return new Dictionary<int, string>();
+                    case "Dictionary<System.Int32,System.SByte>": return new Dictionary<int, sbyte>();
+                    case "Dictionary<System.Int32,System.UInt16>": return new Dictionary<int, ushort>();
+                    case "Dictionary<System.Int32,System.UInt32>": return new Dictionary<int, uint>();
+                    case "Dictionary<System.Int32,System.UInt64>": return new Dictionary<int, long>();
+                    case "Dictionary<System.Int32,System.Byte>": return new Dictionary<int, byte>();
+                    case "Dictionary<System.Int32,System.Int16>": return new Dictionary<int, short>();
+                    case "Dictionary<System.Int32,System.Int32>": return new Dictionary<int, int>();
+                    case "Dictionary<System.Int32,System.Int64>": return new Dictionary<int, long>();
+                    case "Dictionary<System.Int32,System.Boolean>": return new Dictionary<int, bool>();
+                    case "Dictionary<System.Int32,System.Single>": return new Dictionary<int, float>();
+                    case "Dictionary<System.Int32,System.Double>": return new Dictionary<int, double>();
+                    case "Dictionary<System.Int32,System.DateTime>": return new Dictionary<int, DateTime>();
                     default: return null;
                 }
             }
@@ -654,42 +799,74 @@ namespace CSharpLike
         /// <summary>
         /// Row count of this CSV file
         /// </summary>
-        public static int Count
+        public static int GetCount(string fileName)
         {
-            get
-            {
-                return datas.Count;
-            }
+#if _CSHARP_LIKE_
+            if (dataExs.ContainsKey(fileName))
+                return dataExs[fileName].Count;
+            return datas[fileName].Count;
+#else
+            return datas[fileName].Count;
+#endif
         }
         /// <summary>
         /// The dictionary data in memory
         /// </summary>
-        public static Dictionary<string, T> Data
+        public static Dictionary<string, object> GetData(string fileName)
         {
-            get
+            if (datas.TryGetValue(fileName, out Dictionary<string, object> ret))
             {
-                return datas;
+                return ret;
             }
+            return null;
         }
+#if _CSHARP_LIKE_
+        /// <summary>
+        /// The dictionary data in memory
+        /// </summary>
+        public static Dictionary<string, SInstance> GetDataEx(string fileName)
+        {
+            if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> ret))
+            {
+                return ret;
+            }
+            return null;
+        }
+#endif
         /// <summary>
         /// Get the one row data by custom unique key
         /// </summary>
+        /// <param name="fileName">The file name of the CSV file</param>
         /// <param name="strUniqueKey">unique key string</param>
         /// <returns>one row data in a class</returns>
-        public static T Get(string strUniqueKey)
+        public static object Get(string fileName, string strUniqueKey)
         {
-            if (datas.TryGetValue(strUniqueKey, out T value))
+#if _CSHARP_LIKE_
+            if (dataExs.ContainsKey(fileName))
+            {
+                if (dataExs[fileName].TryGetValue(strUniqueKey, out SInstance value))
+                    return value;
+            }
+            else
+            {
+                if (datas[fileName].TryGetValue(strUniqueKey, out object value))
+                    return value;
+            }
+#else
+            if (datas[fileName].TryGetValue(strUniqueKey, out object value))
                 return value;
+#endif
             return default;
         }
         /// <summary>
         /// Get the one row data by custom unique key
         /// </summary>
-        /// <param name="strUniqueKey">unique key value in Int32</param>
+        /// <param name="fileName">The file name of the CSV file</param>
+        /// <param name="uniqueKey">unique key value in Int32</param>
         /// <returns>one row data in a class</returns>
-        public static T Get(int uniqueKey)
+        public static object Get(string fileName, int uniqueKey)
         {
-            return Get(uniqueKey + "");
+            return Get(fileName, uniqueKey + "");
         }
         /// <summary>
         /// Get the one row data by custom unique key (two column as the unique key)
@@ -697,10 +874,23 @@ namespace CSharpLike
         /// <param name="strUniqueKey">column name 1</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <returns>one row data in a class</returns>
-        public static T Get(string strUniqueKey, string strUniqueKey2)
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2)
         {
-            if (datas.TryGetValue(strUniqueKey + "_" + strUniqueKey2, out T value))
+#if _CSHARP_LIKE_
+            if (dataExs.ContainsKey(fileName))
+            {
+                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out SInstance value))
+                    return value;
+            }
+            else
+            {
+                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out object value))
+                    return value;
+            }
+#else
+            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out object value))
                 return value;
+#endif
             return default;
         }
         /// <summary>
@@ -710,10 +900,23 @@ namespace CSharpLike
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
         /// <returns>one row data in a class</returns>
-        public static T Get(string strUniqueKey, string strUniqueKey2, string strUniqueKey3)
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3)
         {
-            if (datas.TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out T value))
+#if _CSHARP_LIKE_
+            if (dataExs.ContainsKey(fileName))
+            {
+                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out SInstance value))
+                    return value;
+            }
+            else
+            {
+                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out object value))
+                    return value;
+            }
+#else
+            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out object value))
                 return value;
+#endif
             return default;
         }
         /// <summary>
@@ -724,57 +927,94 @@ namespace CSharpLike
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="strUniqueKey4">column name 4</param>
         /// <returns>one row data in a class</returns>
-        public static T Get(string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4)
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4)
         {
-            if (datas.TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out T value))
+#if _CSHARP_LIKE_
+            if (dataExs.ContainsKey(fileName))
+            {
+                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out SInstance value))
+                    return value;
+            }
+            else
+            {
+                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out object value))
+                    return value;
+            }
+#else
+            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out object value))
                 return value;
+#endif
             return default;
         }
         /// <summary>
         /// Add or replace a row data by your self
         /// Just modify the data in memory, it won't save into file.
         /// </summary>
+        /// <param name="fileName">The file name of the CSV file</param>
         /// <param name="strUniqueKey">custom key</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string strUniqueKey, T csv)
+        public static void Set(string fileName, string strUniqueKey, object csv)
         {
-            datas[strUniqueKey] = csv;
+            datas[fileName][strUniqueKey] = csv;
         }
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
         /// Just modify the data in memory, it won't save into file.
         /// </summary>
+        /// <param name="fileName">The file name of the CSV file</param>
         /// <param name="strUniqueKey">custom key name</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string strUniqueKey, string strUniqueKey2, T csv)
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, object csv)
         {
-            datas[strUniqueKey + "_" + strUniqueKey2] = csv;
+            datas[fileName][strUniqueKey + "_" + strUniqueKey2] = csv;
         }
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
         /// Just modify the data in memory, it won't save into file.
         /// </summary>
+        /// <param name="fileName">The file name of the CSV file</param>
         /// <param name="strUniqueKey">custom key</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string strUniqueKey, string strUniqueKey2, string strUniqueKey3, T csv)
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, object csv)
         {
-            datas[strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3] = csv;
+            datas[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3] = csv;
         }
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
         /// Just modify the data in memory, it won't save into file.
         /// </summary>
+        /// <param name="fileName">The file name of the CSV file</param>
         /// <param name="strUniqueKey">custom key</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="strUniqueKey4">column name 4</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, T csv)
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, object csv)
         {
-            datas[strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4] = csv;
+            datas[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4] = csv;
         }
+
+#if _CSHARP_LIKE_
+        static Dictionary<string, Dictionary<string, SInstance>> dataExs = new Dictionary<string, Dictionary<string, SInstance>>();
+        public static void Set(string fileName, string strUniqueKey, SInstance csv)
+        {
+            dataExs[fileName][strUniqueKey] = csv;
+        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, SInstance csv)
+        {
+            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2] = csv;
+        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, SInstance csv)
+        {
+            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3] = csv;
+        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, SInstance csv)
+        {
+            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4] = csv;
+        }
+#endif
     }
 }
