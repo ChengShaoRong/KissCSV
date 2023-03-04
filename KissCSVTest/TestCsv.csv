@@ -1,0 +1,3 @@
+id,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBooleanDicts
+1,"test name",1|2,"aa|bb",88.8,"ab_2|cd_4",5_true|6_false
+101,name2,,,,,
