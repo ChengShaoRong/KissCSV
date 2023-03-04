@@ -39,7 +39,7 @@ namespace CSharpLike
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
             datas[fileName] = data;
-            object csv = type.Assembly.CreateInstance(type.FullName);
+            object csv;
             if (string.IsNullOrEmpty(fileContext))
             {
                 if (string.IsNullOrEmpty(keyColumnName4))
