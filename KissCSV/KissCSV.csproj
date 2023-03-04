@@ -3,15 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>ChengShaoRong</Authors>
-    <Description>This is a most simple and stupid way get data from CSV(Comma-Separated Values) file with 'RFC 4180'.
+    <Description>This is a most simple and stupid way get data from CSV(Comma-Separated Values) file with 'RFC 4180'. Read row data from CSV file as class.
 
-这个是最简单易用读取符合'RFC 4180'规范的CSV(Comma-Separated Values)文档.</Description>
+这个是最简单易用读取符合'RFC 4180'规范的CSV(Comma-Separated Values)文档. 直接把指定行以类的方式读出.</Description>
     <Copyright>Copyright © 2023 RongRong</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/ChengShaoRong/KissCSV</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageTags>csv,excel</PackageTags>
   </PropertyGroup>
 

@@ -15,6 +15,7 @@ namespace CSharpLike
     /// <summary>
     /// A most simple and stupid way get data from CSV(Comma-Separated Values) file with 'RFC 4180'.
     /// Read data from CSV file with class (NOT struct!).
+    /// Support use in C#Like or C#LikeFree.
     /// Support type in class as below ONLY:
     /// build-in type: string sbyte ushort uint ulong byte short int long bool float double DateTime
     /// List&lt;build-in type&gt; 
