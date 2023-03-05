@@ -90,73 +90,94 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 ```
 
 # Q&A
->What if there is not only one unique index of my file? e.g. the 'id' and 'number' in TestCsv above constitute a unique index
->>We support a unique index composed of up to 4 columns
->> ``KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number"); `` 
->> ``TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv; `` 
+* What if there is not only one unique index of my file? e.g. the 'id' and 'number' in TestCsv above constitute a unique index
+>We support a unique index composed of up to 4 columns
+```
+		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number");
+		TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv; 
+```
 
->Why not use style like  ``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``? It seem to be more tidy, and don't need to convert while get it.
->>That stype not support in hot update script of C#Like. For compatibility we have to using ``typeof(TestCsv)``. 
+* Why not use style like  ``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``? It seem to be more tidy, and don't need to convert while get it.
+>That stype not support in hot update script of C#Like. For compatibility we have to using ``typeof(TestCsv)``. 
 
->I don't want to define a new class. Can I read the data in CSV directly?
+* I don't want to define a new class. Can I read the data in CSV directly?
 >>You can read by SimpleKissCSV.
->>``SimpleKissCSV.Load("TestCsv.csv", "id"); `` 
->>``SimpleKissCSV.GetInt("TestCsv.csv", "1", "number")); `` 
->>``SimpleKissCSV.GetString("TestCsv.csv", "1", "name")); `` 
+```
+		SimpleKissCSV.Load("TestCsv.csv", "id");
+		SimpleKissCSV.GetInt("TestCsv.csv", "1", "number")); 
+		SimpleKissCSV.GetString("TestCsv.csv", "1", "name"));
+```
 
->What types do the class for the row data support?
->>We had supported types as below:
->>>Build-in type:string sbyte ushort uint ulong byte short int long bool float double DateTime
->>>List\<Build-in type>
->>>Dictionary<string, Build-in type>
->>>Dictionary<int, Build-in type>  
-
->How are the List and Dictionary in the class split?
->>List split by '|'. e.g. "1|2" split into {1,2}
->>Dictionary split by '|', and then split by '_'. e.g. "ab_2|cd_4" split into {{"ab",2},{"cd",4}}
-
->Can I add custom type in class?
->>You can modify function  ``KissCSV.GetValue``.
+* What types do the class for the row data support?
+>We had supported types as below:
+```
+	Build-in type:string sbyte ushort uint ulong byte short int long bool float double DateTime
+	List\<Build-in type>
+	Dictionary<string, Build-in type>
+	Dictionary<int, Build-in type>  
+```
 
 
->Where are the 'TestCsv.csv' put into?
->>In folder ``.\CSV\`` or ``.\``
+* How are the List and Dictionary in the class split?
+>List split by '|'. e.g. "1|2" split into {1,2}
+>Dictionary split by '|', and then split by '_'. e.g. "ab_2|cd_4" split into {{"ab",2},{"cd",4}}
 
->Can I read 'TestCsv.csv' by myself??
->>You can read that file and then pass parameter. e.g. ``KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));``
+* Can I add custom type in class?
+>You can modify function  ``KissCSV.GetValue``.
+
+
+* Where are the 'TestCsv.csv' put into?
+>In folder ``.\CSV\`` or ``.\``
+
+* Can I read 'TestCsv.csv' by myself??
+>You can read that file and then pass parameter. e.g. 
+```
+		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
+```
 
 ***
 
->如果我的文件唯一索引不是只有1个,怎么办?例如上面的TestCsv里的id和number组成唯一索引.
->>我们支持最多4列组成的唯一索引
->> ``KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number"); `` 
->> ``TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv; `` 
+* 如果我的文件唯一索引不是只有1个,怎么办?例如上面的TestCsv里的id和number组成唯一索引.
+>我们支持最多4列组成的唯一索引
+```
+	KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number");
+	TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv;
+```
 
->为什么不采用``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``这种看起来更简洁的方式?而且获取的时候还得强转一次.
->>C#Like的热更脚本不支持,为了兼容,统一使用传入``typeof(TestCsv)``的方式  
 
->我不想新定义一个类,能否直接读取CSV里的数据?
->>可以使用SimpleKissCSV来读取
->>``SimpleKissCSV.Load("TestCsv.csv", "id"); `` 
->>``SimpleKissCSV.GetInt("TestCsv.csv", "1", "number")); `` 
->>``SimpleKissCSV.GetString("TestCsv.csv", "1", "name")); `` 
+* 为什么不采用``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``这种看起来更简洁的方式?而且获取的时候还得强转一次.
+>C#Like的热更脚本不支持,为了兼容,统一使用传入``typeof(TestCsv)``的方式  
 
->每列数据的类支持哪些类型的数据?
->>已支持的类型如下:
->>>内置类型:string sbyte ushort uint ulong byte short int long bool float double DateTime
->>>List<内置类型>
->>>Dictionary<string, 内置类型>
->>>Dictionary<int, 内置类型>  
+* 我不想新定义一个类,能否直接读取CSV里的数据?
+>可以使用SimpleKissCSV来读取
+```
+	SimpleKissCSV.Load("TestCsv.csv", "id");
+	SimpleKissCSV.GetInt("TestCsv.csv", "1", "number"));
+	SimpleKissCSV.GetString("TestCsv.csv", "1", "name")); 
+```
 
->每列数据的类里属性为List和Dictionary的怎么分割的?
->>List以'|'分割, 例如1|2分割成{1,2}
->>Dictionary以'|'分割,然后再以'_'分割, 例如"ab_2|cd_4"分割成{{"ab",2},{"cd",4}}
 
->每列数据的类,我是否能够新增自定义类型
->>请自行修改``KissCSV.GetValue``这个函数
+* 每列数据的类支持哪些类型的数据?
+>已支持的类型如下:
+```
+	内置类型:string sbyte ushort uint ulong byte short int long bool float double DateTime
+	List<内置类型>
+	Dictionary<string, 内置类型>
+	Dictionary<int, 内置类型>  
+```
 
->"TestCsv.csv"这个文件放在哪里文件夹内?
->>在``.\CSV\``或``.\``目录内
+* 每列数据的类里属性为List和Dictionary的怎么分割的?
+>List以'|'分割, 例如1|2分割成{1,2}
+>Dictionary以'|'分割,然后再以'_'分割, 例如"ab_2|cd_4"分割成{{"ab",2},{"cd",4}}
 
->我可否自行读取"TestCsv.csv"这个文件?
->>你可以自行读取文件,然后传入参数,例如``KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));``
+* 每列数据的类,我是否能够新增自定义类型
+>请自行修改``KissCSV.GetValue``这个函数
+
+* "TestCsv.csv"这个文件放在哪里文件夹内?
+>在``.\CSV\``或``.\``目录内
+
+* 我可否自行读取"TestCsv.csv"这个文件?
+>你可以自行读取文件,然后传入参数,例如
+```
+		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
+```
