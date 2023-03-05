@@ -119,7 +119,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 >We had supported types as below:
 ```
 	Build-in type:string sbyte ushort uint ulong byte short int long bool float double DateTime
-	List\<Build-in type>
+	List<Build-in type>
 	Dictionary<string, Build-in type>
 	Dictionary<int, Build-in type>  
 ```
