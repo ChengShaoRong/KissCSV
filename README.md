@@ -1,7 +1,14 @@
 # Introduction
-This is a most simple and stupid way get data from CSV(Comma-Separated Values) file with [RFC 4180](https://datatracker.ietf.org/doc/rfc4180/). It part of  [C#Like](https://assetstore.unity.com/packages/tools/integration/c-likefree-hot-update-framework-222880) and [C#LikeFree](https://assetstore.unity.com/packages/tools/integration/c-like-hot-update-framework-222256) that I uploaded to the Unity Asset Store. You can get the [C#LikeFree](https://github.com/ChengShaoRong/CSharpLikeFree) from GitHub too.
+This is a most simple and stupid way get data from CSV(Comma-Separated Values) file with [RFC 4180](https://datatracker.ietf.org/doc/rfc4180/). It part of  [C#Like](https://assetstore.unity.com/packages/tools/integration/c-likefree-hot-update-framework-222880) and [C#LikeFree](https://assetstore.unity.com/packages/tools/integration/c-like-hot-update-framework-222256) that I uploaded to the Unity Asset Store. You can get the [C#LikeFree](https://github.com/ChengShaoRong/CSharpLikeFree) from GitHub too.  
+
 ***
-这个是最简单易用读取符合[RFC 4180](https://datatracker.ietf.org/doc/rfc4180/)规范的CSV(Comma-Separated Values)文档. 它是我上传到Unity资源商店里的[C#Like](https://assetstore.unity.com/packages/tools/integration/c-likefree-hot-update-framework-222880) 和 [C#Like免费版](https://assetstore.unity.com/packages/tools/integration/c-like-hot-update-framework-222256) 的一部分. 你也可以在GitHub里下载到[C#Like免费版](https://github.com/ChengShaoRong/CSharpLikeFree).
+这个是最简单易用读取符合[RFC 4180](https://datatracker.ietf.org/doc/rfc4180/)规范的CSV(Comma-Separated Values)文档. 它是我上传到Unity资源商店里的[C#Like](https://assetstore.unity.com/packages/tools/integration/c-likefree-hot-update-framework-222880) 和 [C#Like免费版](https://assetstore.unity.com/packages/tools/integration/c-like-hot-update-framework-222256) 的一部分. 你也可以在GitHub里下载到[C#Like免费版](https://github.com/ChengShaoRong/CSharpLikeFree).  
+
+
+# Install
+Package had been uploaded to Nuget, dependent library: **.NET Standard 2.0**. You can install by command ``Install-Package KissCSV``
+***
+包已上传至Nuget,依赖库为: **.NET Standard 2.0**. 你可以通过``Install-Package KissCSV``来安装.
 
 # Usage
 e.g. we want to read the 'TestCsv.csv' file which take column 'id' as the unique index, and the file contents is below:
@@ -47,7 +54,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 ```
 
 ***
-假定我们要读取TestCsv.csv这个文件,该文件以id这列为唯一索引,文件里面内容为
+例如我们要读取TestCsv.csv这个文件,该文件以id这列为唯一索引,文件里面内容为
 ```
 id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBooleanDicts
 1,5,"test name",1|2,"aa|bb",88.8,"ab_2|cd_4",5_true|6_false
@@ -98,7 +105,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 ```
 
 * Why not use style like  ``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``? It seem to be more tidy, and don't need to convert while get it.
->That stype not support in hot update script of C#Like. For compatibility we have to using ``typeof(TestCsv)``. 
+>That style not support in hot update script of C#Like. For compatibility we have to using ``typeof(TestCsv)``. 
 
 * I don't want to define a new class. Can I read the data in CSV directly?
 >>You can read by SimpleKissCSV.
@@ -119,7 +126,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 
 
 * How are the List and Dictionary in the class split?
->List split by '|'. e.g. "1|2" split into {1,2}
+>List split by '|'. e.g. "1|2" split into {1,2}  
 >Dictionary split by '|', and then split by '_'. e.g. "ab_2|cd_4" split into {{"ab",2},{"cd",4}}
 
 * Can I add custom type in class?
@@ -167,7 +174,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 ```
 
 * 每列数据的类里属性为List和Dictionary的怎么分割的?
->List以'|'分割, 例如1|2分割成{1,2}
+>List以'|'分割, 例如1|2分割成{1,2}  
 >Dictionary以'|'分割,然后再以'_'分割, 例如"ab_2|cd_4"分割成{{"ab",2},{"cd",4}}
 
 * 每列数据的类,我是否能够新增自定义类型
