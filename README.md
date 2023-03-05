@@ -93,8 +93,8 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 * What if there is not only one unique index of my file? e.g. the 'id' and 'number' in TestCsv above constitute a unique index
 >We support a unique index composed of up to 4 columns
 ```
-		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number");
-		TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv; 
+	KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", null, "number");
+	TestCsv csv = KissCSV.Get("TestCsv.csv", "1", "5") as TestCsv; 
 ```
 
 * Why not use style like  ``KissCSV<TestCsv>.Load("TestCsv.csv", "id");``? It seem to be more tidy, and don't need to convert while get it.
@@ -103,9 +103,9 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 * I don't want to define a new class. Can I read the data in CSV directly?
 >>You can read by SimpleKissCSV.
 ```
-		SimpleKissCSV.Load("TestCsv.csv", "id");
-		SimpleKissCSV.GetInt("TestCsv.csv", "1", "number")); 
-		SimpleKissCSV.GetString("TestCsv.csv", "1", "name"));
+	SimpleKissCSV.Load("TestCsv.csv", "id");
+	SimpleKissCSV.GetInt("TestCsv.csv", "1", "number")); 
+	SimpleKissCSV.GetString("TestCsv.csv", "1", "name"));
 ```
 
 * What types do the class for the row data support?
@@ -132,7 +132,7 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 * Can I read 'TestCsv.csv' by myself??
 >You can read that file and then pass parameter. e.g. 
 ```
-		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
+	KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
 ```
 
 ***
@@ -179,5 +179,5 @@ id,number,name,testInts,testStrings,testFloats,testStringIntDicts,testIntBoolean
 * 我可否自行读取"TestCsv.csv"这个文件?
 >你可以自行读取文件,然后传入参数,例如
 ```
-		KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
+	KissCSV.Load(typeof(TestCsv), "TestCsv.csv", "id", File.ReadAllText("./CSV/TestCsv.csv"));
 ```
