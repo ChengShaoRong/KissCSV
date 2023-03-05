@@ -30,7 +30,7 @@ namespace CSharpLike
         /// </summary>
         /// <param name="fileName">File name of the CSV file, will load it from ".\\CSV\\" or ".\\"</param>
         /// <param name="columnName">The column name of unique id in this CSV file</param>
-        public static void Init(string fileName, string columnName)
+        public static void Load(string fileName, string columnName)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, null);
         }
@@ -48,7 +48,7 @@ namespace CSharpLike
         /// <param name="fileName">File name of the CSV file, will load it from ".\\CSV\\" or ".\\"</param>
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
-        public static void Init(string fileName, string columnName, string columnName2)
+        public static void Load(string fileName, string columnName, string columnName2)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, null);
         }
@@ -67,7 +67,7 @@ namespace CSharpLike
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName3">The third column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
-        public static void Init(string fileName, string columnName, string columnName2, string columnName3)
+        public static void Load(string fileName, string columnName, string columnName2, string columnName3)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, columnName3, null);
         }
@@ -87,7 +87,7 @@ namespace CSharpLike
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2_columnName3_columnName4' will as the unique id in this CSV file</param>
         /// <param name="columnName3">The third column name in this CSV file, 'columnName_columnName2_columnName3_columnName4' will as the unique id in this CSV file</param>
         /// <param name="columnName4">The fourth column name in this CSV file, 'columnName_columnName2_columnName3_columnName4' will as the unique id in this CSV file</param>
-        public static void Init(string fileName, string columnName, string columnName2, string columnName3, string columnName4)
+        public static void Load(string fileName, string columnName, string columnName2, string columnName3, string columnName4)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, columnName3, columnName4, null);
         }
@@ -105,7 +105,7 @@ namespace CSharpLike
         /// <param name="fileName">File name of the CSV file, will load it from ".\\CSV\\" or ".\\" if fileContent is empty</param>
         /// <param name="columnName">The column name of unique id in this CSV file</param>
         /// <param name="fileContent">The string of the file content, you can load the file by yourself</param>
-        public static void InitWithFileContent(string fileName, string columnName, string fileContent)
+        public static void LoadWithFileContent(string fileName, string columnName, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, fileContent);
         }
@@ -123,7 +123,7 @@ namespace CSharpLike
         /// <param name="fileName">File name of the CSV file, will load it from ".\\CSV\\" or ".\\" if fileContent is empty</param>
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
-        public static void InitWithFileContent(string fileName, string columnName, string columnName2, string fileContent)
+        public static void LoadWithFileContent(string fileName, string columnName, string columnName2, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, fileContent);
         }
@@ -142,7 +142,7 @@ namespace CSharpLike
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName3">The third column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
-        public static void InitWithFileContent(string fileName, string columnName, string columnName2, string columnName3, string fileContent)
+        public static void LoadWithFileContent(string fileName, string columnName, string columnName2, string columnName3, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, columnName3, fileContent);
         }
@@ -163,7 +163,7 @@ namespace CSharpLike
         /// <param name="columnName3">The third column name in this CSV file, 'columnName_columnName2_columnName3_columnName4' will as the unique id in this CSV file</param>
         /// <param name="columnName4">The fourth column name in this CSV file, 'columnName_columnName2_columnName3_columnName4' will as the unique id in this CSV file</param>
         /// <param name="fileContent">The string of the file content, you can load the file by yourself</param>
-        public static void InitWithFileContent(string fileName, string columnName, string columnName2, string columnName3, string columnName4, string fileContent)
+        public static void LoadWithFileContent(string fileName, string columnName, string columnName2, string columnName3, string columnName4, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, columnName3, columnName4, fileContent);
         }

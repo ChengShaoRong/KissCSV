@@ -11,8 +11,9 @@
     <PackageProjectUrl>https://github.com/ChengShaoRong/KissCSV</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageTags>csv,excel</PackageTags>
+    <RepositoryUrl>https://github.com/ChengShaoRong/KissCSV.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

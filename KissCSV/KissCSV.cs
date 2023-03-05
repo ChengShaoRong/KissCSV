@@ -15,7 +15,6 @@ namespace CSharpLike
     /// <summary>
     /// A most simple and stupid way get data from CSV(Comma-Separated Values) file with 'RFC 4180'.
     /// Read data from CSV file with class (NOT struct!).
-    /// Support use in C#Like or C#LikeFree.
     /// Support type in class as below ONLY:
     /// build-in type: string sbyte ushort uint ulong byte short int long bool float double DateTime
     /// List&lt;build-in type&gt; 
@@ -39,7 +38,7 @@ namespace CSharpLike
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
             datas[fileName] = data;
-            object csv;
+            object csv = type.Assembly.CreateInstance(type.FullName);
             if (string.IsNullOrEmpty(fileContext))
             {
                 if (string.IsNullOrEmpty(keyColumnName4))
@@ -49,24 +48,24 @@ namespace CSharpLike
                         if (string.IsNullOrEmpty(keyColumnName2))
                         {
                             Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"");
-                            SimpleKissCSV.Init(fileName, keyColumnName);
+                            SimpleKissCSV.Load(fileName, keyColumnName);
                         }
                         else
                         {
                             Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
-                            SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2);
+                            SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2);
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
-                        SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3);
+                        SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2, keyColumnName3);
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
-                    SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4);
+                    SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4);
                 }
             }
             else
@@ -78,24 +77,24 @@ namespace CSharpLike
                         if (string.IsNullOrEmpty(keyColumnName2))
                         {
                             Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"");
-                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, fileContext);
+                            SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, fileContext);
                         }
                         else
                         {
                             Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
-                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, fileContext);
+                            SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, fileContext);
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
-                        SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, fileContext);
+                        SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, fileContext);
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
-                    SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4, fileContext);
+                    SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4, fileContext);
                 }
             }
             List<string> keys = SimpleKissCSV.GetStringListKeys(fileName);
@@ -184,24 +183,24 @@ namespace CSharpLike
                         if (string.IsNullOrEmpty(keyColumnName2))
                         {
                             Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"");
-                            SimpleKissCSV.Init(fileName, keyColumnName);
+                            SimpleKissCSV.Load(fileName, keyColumnName);
                         }
                         else
                         {
                             Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
-                            SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2);
+                            SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2);
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
-                        SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3);
+                        SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2, keyColumnName3);
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Load \"{fileName}\" (auto load) and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
-                    SimpleKissCSV.Init(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4);
+                    SimpleKissCSV.Load(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4);
                 }
             }
             else
@@ -213,24 +212,24 @@ namespace CSharpLike
                         if (string.IsNullOrEmpty(keyColumnName2))
                         {
                             Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"");
-                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, fileContext);
+                            SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, fileContext);
                         }
                         else
                         {
                             Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"");
-                            SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, fileContext);
+                            SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, fileContext);
                         }
                     }
                     else
                     {
                         Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"");
-                        SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, fileContext);
+                        SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, fileContext);
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Load \"{fileName}\" and key column \"{keyColumnName}\"_\"{keyColumnName2}\"_\"{keyColumnName3}\"_\"{keyColumnName4}\"");
-                    SimpleKissCSV.InitWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4, fileContext);
+                    SimpleKissCSV.LoadWithFileContent(fileName, keyColumnName, keyColumnName2, keyColumnName3, keyColumnName4, fileContext);
                 }
             }
             List<string> keys = SimpleKissCSV.GetStringListKeys(fileName);

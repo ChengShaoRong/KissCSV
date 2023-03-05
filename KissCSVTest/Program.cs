@@ -16,6 +16,7 @@ namespace KissCSVTest
     public class TestCsv
     {
         public int id;
+        public int number;
         public string name;
         public List<int> testInts;
         public List<string> testStrings;
@@ -49,7 +50,7 @@ namespace KissCSVTest
             // Load the CSV file into memory. You need call this just one time before get any value from it.
             // If you want to reload the CSV file you can call it again.
             // We will try load './Item.csv' if './CSV/Item.csv' not exist.
-            SimpleKissCSV.Init("Item.csv", "id");
+            SimpleKissCSV.Load("Item.csv", "id");
             //KissCSV.InitWithFileContent("Item.csv", "id", File.ReadAllText("./Item.csv"));//You can load the file by yourself if you need to.
 
             //Below are file content of 'Item.csv'
