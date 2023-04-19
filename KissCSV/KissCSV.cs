@@ -27,6 +27,7 @@ namespace CSharpLike
         /// <summary>
         /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
         /// </summary>
+        /// <param name="type">CSV target type.</param>
         /// <param name="fileName">File name of the CSV file, will load it from '.\\CSV\\' or '.\\' by 'File.ReadAllText', MUST be unique.</param>
         /// <param name="keyColumnName">The column name of unique id in this CSV file</param>
         /// <param name="fileContext">The CSV file conten, if not null, will direct use it, and won't load by fileName, because you may load the CSV file from AssetBundle or Addressables. If null will load from fileName in ".\\CSV\\" or ".\\". Default is null.</param>
@@ -871,6 +872,7 @@ namespace CSharpLike
         /// <summary>
         /// Get the one row data by custom unique key (two column as the unique key)
         /// </summary>
+        /// <param name="fileName">CSV file name</param>
         /// <param name="strUniqueKey">column name 1</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <returns>one row data in a class</returns>
@@ -896,6 +898,7 @@ namespace CSharpLike
         /// <summary>
         /// Get the one row data by custom unique key (three column as the unique key)
         /// </summary>
+        /// <param name="fileName">CSV file name</param>
         /// <param name="strUniqueKey">column name 1</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
@@ -922,6 +925,7 @@ namespace CSharpLike
         /// <summary>
         /// Get the one row data by custom unique key (four column as the unique key)
         /// </summary>
+        /// <param name="fileName">CSV file name</param>
         /// <param name="strUniqueKey">column name 1</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>

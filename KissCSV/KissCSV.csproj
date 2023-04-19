@@ -11,9 +11,18 @@
     <PackageProjectUrl>https://github.com/ChengShaoRong/KissCSV</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageIconUrl />
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <PackageTags>csv,excel</PackageTags>
     <RepositoryUrl>https://github.com/ChengShaoRong/KissCSV.git</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\repos\ChengShaoRong\KissCSV\KissCSV\KissCSV.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\KissCSV.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

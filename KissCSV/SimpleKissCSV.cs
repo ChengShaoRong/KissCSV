@@ -123,6 +123,7 @@ namespace CSharpLike
         /// <param name="fileName">File name of the CSV file, will load it from ".\\CSV\\" or ".\\" if fileContent is empty</param>
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2' will as the unique id in this CSV file</param>
+        /// <param name="fileContent">The file content that you load it by yourself</param>
         public static void LoadWithFileContent(string fileName, string columnName, string columnName2, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, fileContent);
@@ -142,6 +143,7 @@ namespace CSharpLike
         /// <param name="columnName">The first column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName2">The second column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
         /// <param name="columnName3">The third column name in this CSV file, 'columnName_columnName2_columnName3' will as the unique id in this CSV file</param>
+        /// <param name="fileContent">The file content that you load it by yourself</param>
         public static void LoadWithFileContent(string fileName, string columnName, string columnName2, string columnName3, string fileContent)
         {
             mDatas[fileName] = new KissCSVImpl(fileName, columnName, columnName2, columnName3, fileContent);
@@ -176,7 +178,7 @@ namespace CSharpLike
         /// 101,item2,8888
         /// "
         /// Useage:
-        /// List<int> keys = KissCSV.GetIntListKeys("Item.csv"");//keys content is {100,101}
+        /// List&lt;int&gt; keys = KissCSV.GetIntListKeys("Item.csv"");//keys content is {100,101}
         /// </summary>
         /// <param name="fileName">File name of the CSV file</param>
         public static List<int> GetIntListKeys(string fileName)
@@ -194,7 +196,7 @@ namespace CSharpLike
         /// 101,item2,8888
         /// "
         /// Useage:
-        /// List<string> keys = KissCSV.GetStringListKeys("Item.csv"");//keys content is {"100","101"}
+        /// List&lt;string&gt; keys = KissCSV.GetStringListKeys("Item.csv"");//keys content is {"100","101"}
         /// </summary>
         /// <param name="fileName">File name of the CSV file</param>
         public static List<string> GetStringListKeys(string fileName)
@@ -708,6 +710,11 @@ namespace CSharpLike
             }
             return ret;
         }
+        /// <summary>
+        /// Clear the data in cache by specific key
+        /// </summary>
+        /// <param name="key">specific key that you want to clear, default empty mean clear all data.</param>
+        /// <returns></returns>
         public static bool Clear(string key = "")
         {
             if (string.IsNullOrEmpty(key))
@@ -724,8 +731,9 @@ namespace CSharpLike
             }
             return false;
         }
-
-
+        /// <summary>
+        /// Print log when has duplicate key in CSV
+        /// </summary>
         public static bool printLogWhenDuplicateCSV = true;
         #region InternalImpl
         static Dictionary<string, KissCSVImpl> mDatas = new Dictionary<string, KissCSVImpl>();
