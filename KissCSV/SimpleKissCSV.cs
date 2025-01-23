@@ -1,6 +1,6 @@
 ﻿/*
  *           KissCSV
- * Copyright © 2023 RongRong. All right reserved.
+ * Copyright © 2023-2025 RongRong. All right reserved.
  */
 using System;
 using System.Collections.Generic;
@@ -243,7 +243,26 @@ namespace CSharpLike
         /// <param name="fDefault">default value if not exist in CSV file</param>
         public static float GetSingle(string fileName, string strUniqueKey, string strColumnName, float fDefault = 0.0f)
         {
-            return Convert.ToSingle(GetString(fileName, strUniqueKey, strColumnName, fDefault.ToString()), CultureInfo.InvariantCulture);
+            return Convert.ToSingle(GetString(fileName, strUniqueKey, strColumnName, fDefault.ToString(KissCSV.CultureForConvertFloatAndDouble)), KissCSV.CultureForConvertFloatAndDouble);
+        }
+        /// <summary>
+        /// Get the float value from CSV file.
+        /// E.G. "Item.csv" file content is below:
+        /// "
+        /// id,name,maxStack,time
+        /// 100,"item name",9999,"01/22/2025 00:12:34"
+        /// 101,item2,8888,"01/22/2025 00:12:34"
+        /// "
+        /// Useage:
+        /// DateTime time = KissCSV.GetSingle("Item.csv", "101", "time");
+        /// </summary>
+        /// <param name="fileName">File name of the CSV file</param>
+        /// <param name="strUniqueKey">The unique key that that your want to get value</param>
+        /// <param name="strColumnName">The column name that your want to get value</param>
+        /// <param name="fDefault">default value if not exist in CSV file</param>
+        public static float GetDateTime(string fileName, string strUniqueKey, string strColumnName, DateTime fDefault = default)
+        {
+            return Convert.ToSingle(GetString(fileName, strUniqueKey, strColumnName, fDefault.ToString(KissCSV.CultureForConvertDateTime)), KissCSV.CultureForConvertDateTime);
         }
         /// <summary>
         /// Get the int value from CSV file.
@@ -305,7 +324,7 @@ namespace CSharpLike
         /// <param name="dDefault">default value if not exist in CSV file</param>
         public static double GetDouble(string fileName, string strUniqueKey, string strColumnName, double dDefault = 0)
         {
-            return Convert.ToDouble(GetString(fileName, strUniqueKey, strColumnName, dDefault.ToString()), CultureInfo.InvariantCulture);
+            return Convert.ToDouble(GetString(fileName, strUniqueKey, strColumnName, dDefault.ToString(KissCSV.CultureForConvertFloatAndDouble)), KissCSV.CultureForConvertFloatAndDouble);
         }
         /// <summary>
         /// Get the StringList value from CSV file, and split by '|', but the string can't contain '|' itself.
@@ -362,7 +381,7 @@ namespace CSharpLike
                 return ret;
             string[] strs = str.Split('|');
             foreach (string s in strs)
-                ret.Add(Convert.ToSingle(s, CultureInfo.InvariantCulture));
+                ret.Add(Convert.ToSingle(s, KissCSV.CultureForConvertDateTime));
             return ret;
         }
         /// <summary>
@@ -525,7 +544,7 @@ namespace CSharpLike
             {
                 string[] strss = s.Split('_');
                 if (strss.Length == 2)
-                    ret[strss[0]] = Convert.ToSingle(strss[1], CultureInfo.InvariantCulture);
+                    ret[strss[0]] = Convert.ToSingle(strss[1], KissCSV.CultureForConvertDateTime);
             }
             return ret;
         }
@@ -632,7 +651,7 @@ namespace CSharpLike
             {
                 string[] strss = s.Split('_');
                 if (strss.Length == 2)
-                    ret[Convert.ToInt32(strss[0])] = Convert.ToSingle(strss[1], CultureInfo.InvariantCulture);
+                    ret[Convert.ToInt32(strss[0])] = Convert.ToSingle(strss[1], KissCSV.CultureForConvertDateTime);
             }
             return ret;
         }

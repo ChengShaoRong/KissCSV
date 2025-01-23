@@ -1,6 +1,6 @@
 ﻿/*
  *           KissCSV
- * Copyright © 2023 RongRong. All right reserved.
+ * Copyright © 2023-2025 RongRong. All right reserved.
  */
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,15 @@ namespace CSharpLike
     /// </summary>
     public sealed class KissCSV
     {
+        /// <summary>
+        /// The FormatProvider for 'Convert.ToSingle' and 'Convert.ToDouble'. Default is 'CultureInfo.InvariantCulture'.
+        /// </summary>
+        public static CultureInfo CultureForConvertFloatAndDouble { get; set; } = CultureInfo.InvariantCulture;
+        /// <summary>
+        /// The FormatProvider for 'Convert.ToDateTime'. Default is 'CultureInfo.InvariantCulture'.
+        /// You should set this to fit your DateTime format in your CSV file.
+        /// </summary>
+        public static CultureInfo CultureForConvertDateTime { get; set; } = CultureInfo.InvariantCulture;
         static Dictionary<string, Dictionary<string, object>> datas = new Dictionary<string, Dictionary<string, object>>();
         /// <summary>
         /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
@@ -117,6 +126,8 @@ namespace CSharpLike
             Dictionary<PropertyInfo, string> propertys = new Dictionary<PropertyInfo, string>();
             foreach (var f in ps)
             {
+                if (!f.CanRead || !f.CanWrite)
+                    continue;
                 if (f.PropertyType.IsEnum)
                 {
                     propertys.Add(f, "IsEnum");
@@ -172,7 +183,7 @@ namespace CSharpLike
         /// <returns></returns>
         public static int Load(SType type, string fileName, string keyColumnName, string fileContext = null, string keyColumnName2 = null, string keyColumnName3 = null, string keyColumnName4 = null)
         {
-            UnityEngine.Debug.LogError("Load ");
+            Console.WriteLine("Load " + fileName);
             Dictionary<string, object> data = new Dictionary<string, object>();
             datas[fileName] = data;
             if (string.IsNullOrEmpty(fileContext))
@@ -339,9 +350,9 @@ namespace CSharpLike
                 case "System.Boolean":
                     if (strValue.Length == 1) return strValue != "0";
                     else return Convert.ToBoolean(strValue);
-                case "System.Single": return Convert.ToSingle(strValue, CultureInfo.InvariantCulture);
-                case "System.Double": return Convert.ToDouble(strValue, CultureInfo.InvariantCulture);
-                case "System.DateTime": return Convert.ToDateTime(strValue);
+                case "System.Single": return Convert.ToSingle(strValue, CultureForConvertFloatAndDouble);
+                case "System.Double": return Convert.ToDouble(strValue, CultureForConvertFloatAndDouble);
+                case "System.DateTime": return Convert.ToDateTime(strValue, CultureForConvertDateTime);
                 case "List<System.String>":
                     {
                         List<string> ret = new List<string>();
@@ -419,7 +430,7 @@ namespace CSharpLike
                         List<float> ret = new List<float>();
                         string[] strs = strValue.Split('|');
                         foreach (string s in strs)
-                            ret.Add((s.Length == 0) ? default : Convert.ToSingle(s, CultureInfo.InvariantCulture));
+                            ret.Add((s.Length == 0) ? default : Convert.ToSingle(s, CultureForConvertFloatAndDouble));
                         return ret;
                     }
                 case "List<System.Double>":
@@ -427,7 +438,7 @@ namespace CSharpLike
                         List<double> ret = new List<double>();
                         string[] strs = strValue.Split('|');
                         foreach (string s in strs)
-                            ret.Add((s.Length == 0) ? default : Convert.ToDouble(s, CultureInfo.InvariantCulture));
+                            ret.Add((s.Length == 0) ? default : Convert.ToDouble(s, CultureForConvertFloatAndDouble));
                         return ret;
                     }
                 case "List<System.DateTime>":
@@ -435,7 +446,7 @@ namespace CSharpLike
                         List<DateTime> ret = new List<DateTime>();
                         string[] strs = strValue.Split('|');
                         foreach (string s in strs)
-                            ret.Add((s.Length == 0) ? default : Convert.ToDateTime(s));
+                            ret.Add((s.Length == 0) ? default : Convert.ToDateTime(s, CultureForConvertDateTime));
                         return ret;
                     }
                 case "List<System.Boolean>":
@@ -574,7 +585,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[strss[0]] = Convert.ToSingle(strss[1], CultureInfo.InvariantCulture);
+                                ret[strss[0]] = Convert.ToSingle(strss[1], CultureForConvertFloatAndDouble);
                         }
                         return ret;
                     }
@@ -586,7 +597,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[strss[0]] = Convert.ToDouble(strss[1], CultureInfo.InvariantCulture);
+                                ret[strss[0]] = Convert.ToDouble(strss[1], CultureForConvertFloatAndDouble);
                         }
                         return ret;
                     }
@@ -598,7 +609,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[strss[0]] = Convert.ToDateTime(strss[1]);
+                                ret[strss[0]] = Convert.ToDateTime(strss[1], CultureForConvertDateTime);
                         }
                         return ret;
                     }
@@ -730,7 +741,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[Convert.ToInt32(strss[0])] = Convert.ToSingle(strss[1], CultureInfo.InvariantCulture);
+                                ret[Convert.ToInt32(strss[0])] = Convert.ToSingle(strss[1], CultureForConvertFloatAndDouble);
                         }
                         return ret;
                     }
@@ -742,7 +753,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[Convert.ToInt32(strss[0])] = Convert.ToDouble(strss[1], CultureInfo.InvariantCulture);
+                                ret[Convert.ToInt32(strss[0])] = Convert.ToDouble(strss[1], CultureForConvertFloatAndDouble);
                         }
                         return ret;
                     }
@@ -754,7 +765,7 @@ namespace CSharpLike
                         {
                             string[] strss = s.Split('_');
                             if (strss.Length == 2)
-                                ret[Convert.ToInt32(strss[0])] = Convert.ToDateTime(strss[1]);
+                                ret[Convert.ToInt32(strss[0])] = Convert.ToDateTime(strss[1], CultureForConvertDateTime);
                         }
                         return ret;
                     }
@@ -783,7 +794,8 @@ namespace CSharpLike
                 default:
                     if (strFullName.StartsWith("System.Collections.Generic.List`1["))//List<
                     {
-                        return $"List<{strFullName.Substring(35, strFullName.IndexOf(',', 35) - 35)}>";
+                        string str = strFullName.Substring(35, strFullName.IndexOf(',', 35) - 35);
+                        return IsSupportType(str) ? $"List<{str}>" : null;
                     }
                     else if (strFullName.StartsWith("System.Collections.Generic.Dictionary`2[["))//Dictionary<
                     {
@@ -792,23 +804,46 @@ namespace CSharpLike
                         int iStart = strFullName.IndexOf("],[", iEnd);
                         iEnd = strFullName.IndexOf(',', iStart + 3);
                         string strSecond = strFullName.Substring(iStart + 3, iEnd - iStart - 3);
-                        return $"Dictionary<{strFirst},{strSecond}>";
+                        return IsSupportTypeEx(strFirst) && IsSupportType(strSecond) ? $"Dictionary<{strFirst},{strSecond}>" : null;
                     }
                     return null;
             }
         }
+        static bool IsSupportType(string strFullName)
+        {
+            switch (strFullName)
+            {
+                case "System.String":
+                case "System.SByte":
+                case "System.UInt16":
+                case "System.UInt32":
+                case "System.UInt64":
+                case "System.Byte":
+                case "System.Int16":
+                case "System.Int32":
+                case "System.Int64":
+                case "System.Boolean":
+                case "System.Single":
+                case "System.Double":
+                case "System.DateTime":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        static bool IsSupportTypeEx(string strFullName) => strFullName == "System.String" || strFullName == "System.Int32";
         /// <summary>
         /// Row count of this CSV file
         /// </summary>
         public static int GetCount(string fileName)
         {
 #if _CSHARP_LIKE_
-            if (dataExs.ContainsKey(fileName))
-                return dataExs[fileName].Count;
-            return datas[fileName].Count;
-#else
-            return datas[fileName].Count;
+            if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> valueEx) && valueEx != null)
+                return valueEx.Count;
 #endif
+            if (datas.TryGetValue(fileName, out Dictionary<string, object> value) && value != null)
+                return value.Count;
+            return 0;
         }
         /// <summary>
         /// The dictionary data in memory
@@ -828,9 +863,7 @@ namespace CSharpLike
         public static Dictionary<string, SInstance> GetDataEx(string fileName)
         {
             if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> ret))
-            {
                 return ret;
-            }
             return null;
         }
 #endif
@@ -843,20 +876,15 @@ namespace CSharpLike
         public static object Get(string fileName, string strUniqueKey)
         {
 #if _CSHARP_LIKE_
-            if (dataExs.ContainsKey(fileName))
-            {
-                if (dataExs[fileName].TryGetValue(strUniqueKey, out SInstance value))
-                    return value;
-            }
-            else
-            {
-                if (datas[fileName].TryGetValue(strUniqueKey, out object value))
-                    return value;
-            }
-#else
-            if (datas[fileName].TryGetValue(strUniqueKey, out object value))
+            if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> dicEx)
+                && dicEx != null
+                && dicEx.TryGetValue(strUniqueKey, out SInstance value))
                 return value;
 #endif
+            if (datas.TryGetValue(fileName, out Dictionary<string, object> dic)
+                && dic != null
+                && dic.TryGetValue(strUniqueKey, out object value))
+                return value;
             return default;
         }
         /// <summary>
@@ -876,25 +904,8 @@ namespace CSharpLike
         /// <param name="strUniqueKey">column name 1</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <returns>one row data in a class</returns>
-        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2)
-        {
-#if _CSHARP_LIKE_
-            if (dataExs.ContainsKey(fileName))
-            {
-                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out SInstance value))
-                    return value;
-            }
-            else
-            {
-                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out object value))
-                    return value;
-            }
-#else
-            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2, out object value))
-                return value;
-#endif
-            return default;
-        }
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2) => Get(fileName, strUniqueKey + "_" + strUniqueKey2);
+
         /// <summary>
         /// Get the one row data by custom unique key (three column as the unique key)
         /// </summary>
@@ -903,25 +914,8 @@ namespace CSharpLike
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
         /// <returns>one row data in a class</returns>
-        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3)
-        {
-#if _CSHARP_LIKE_
-            if (dataExs.ContainsKey(fileName))
-            {
-                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out SInstance value))
-                    return value;
-            }
-            else
-            {
-                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out object value))
-                    return value;
-            }
-#else
-            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, out object value))
-                return value;
-#endif
-            return default;
-        }
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3) => Get(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3);
+
         /// <summary>
         /// Get the one row data by custom unique key (four column as the unique key)
         /// </summary>
@@ -931,25 +925,8 @@ namespace CSharpLike
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="strUniqueKey4">column name 4</param>
         /// <returns>one row data in a class</returns>
-        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4)
-        {
-#if _CSHARP_LIKE_
-            if (dataExs.ContainsKey(fileName))
-            {
-                if (dataExs[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out SInstance value))
-                    return value;
-            }
-            else
-            {
-                if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out object value))
-                    return value;
-            }
-#else
-            if (datas[fileName].TryGetValue(strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, out object value))
-                return value;
-#endif
-            return default;
-        }
+        public static object Get(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4) => Get(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4);
+
         /// <summary>
         /// Add or replace a row data by your self
         /// Just modify the data in memory, it won't save into file.
@@ -959,7 +936,9 @@ namespace CSharpLike
         /// <param name="csv">your custom data</param>
         public static void Set(string fileName, string strUniqueKey, object csv)
         {
-            datas[fileName][strUniqueKey] = csv;
+            if (datas.TryGetValue(fileName, out Dictionary<string, object> dic)
+                && dic != null)
+                dic[strUniqueKey] = csv;
         }
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
@@ -969,10 +948,7 @@ namespace CSharpLike
         /// <param name="strUniqueKey">custom key name</param>
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, object csv)
-        {
-            datas[fileName][strUniqueKey + "_" + strUniqueKey2] = csv;
-        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, object csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2, csv);
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
         /// Just modify the data in memory, it won't save into file.
@@ -982,10 +958,8 @@ namespace CSharpLike
         /// <param name="strUniqueKey2">column name 2</param>
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, object csv)
-        {
-            datas[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3] = csv;
-        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, object csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, csv);
+
         /// <summary>
         /// Add or replace a row data by your self (two column as the unique key)
         /// Just modify the data in memory, it won't save into file.
@@ -996,29 +970,22 @@ namespace CSharpLike
         /// <param name="strUniqueKey3">column name 3</param>
         /// <param name="strUniqueKey4">column name 4</param>
         /// <param name="csv">your custom data</param>
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, object csv)
-        {
-            datas[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4] = csv;
-        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, object csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, csv);
 
 #if _CSHARP_LIKE_
         static Dictionary<string, Dictionary<string, SInstance>> dataExs = new Dictionary<string, Dictionary<string, SInstance>>();
         public static void Set(string fileName, string strUniqueKey, SInstance csv)
         {
-            dataExs[fileName][strUniqueKey] = csv;
+            if (datas.TryGetValue(fileName, out Dictionary<string, SInstance> dic)
+                && dic != null)
+                dic[strUniqueKey] = csv;
         }
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, SInstance csv)
-        {
-            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2] = csv;
-        }
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, SInstance csv)
-        {
-            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3] = csv;
-        }
-        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, SInstance csv)
-        {
-            dataExs[fileName][strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4] = csv;
-        }
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, SInstance csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2, csv);
+
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, SInstance csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3, csv);
+
+        public static void Set(string fileName, string strUniqueKey, string strUniqueKey2, string strUniqueKey3, string strUniqueKey4, SInstance csv) => Set(fileName, strUniqueKey + "_" + strUniqueKey2 + "_" + strUniqueKey3 + "_" + strUniqueKey4, csv);
+
 #endif
     }
 }
