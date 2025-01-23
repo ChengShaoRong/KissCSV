@@ -34,7 +34,7 @@ namespace CSharpLike
         public static CultureInfo CultureForConvertDateTime { get; set; } = CultureInfo.InvariantCulture;
         static Dictionary<string, Dictionary<string, object>> datas = new Dictionary<string, Dictionary<string, object>>();
         /// <summary>
-        /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
+        /// Initialize the CSV file into memory, just need call one time. Recall it if you reed reload it.
         /// </summary>
         /// <param name="type">CSV target type.</param>
         /// <param name="fileName">File name of the CSV file, will load it from '.\\CSV\\' or '.\\' by 'File.ReadAllText', MUST be unique.</param>
@@ -172,7 +172,7 @@ namespace CSharpLike
         }
 #if _CSHARP_LIKE_
         /// <summary>
-        /// Initalize the CSV file into memory, just need call one time. Recall it if you reed reload it.
+        /// Initialize the CSV file into memory, just need call one time. Recall it if you reed reload it.
         /// </summary>
         /// <param name="fileName">File name of the CSV file, will load it from '.\\CSV\\' or '.\\' by 'File.ReadAllText', MUST be unique.</param>
         /// <param name="keyColumnName">The column name of unique id in this CSV file</param>
@@ -183,7 +183,6 @@ namespace CSharpLike
         /// <returns></returns>
         public static int Load(SType type, string fileName, string keyColumnName, string fileContext = null, string keyColumnName2 = null, string keyColumnName3 = null, string keyColumnName4 = null)
         {
-            Console.WriteLine("Load " + fileName);
             Dictionary<string, object> data = new Dictionary<string, object>();
             datas[fileName] = data;
             if (string.IsNullOrEmpty(fileContext))
@@ -878,8 +877,8 @@ namespace CSharpLike
 #if _CSHARP_LIKE_
             if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> dicEx)
                 && dicEx != null
-                && dicEx.TryGetValue(strUniqueKey, out SInstance value))
-                return value;
+                && dicEx.TryGetValue(strUniqueKey, out SInstance valueEx))
+                return valueEx;
 #endif
             if (datas.TryGetValue(fileName, out Dictionary<string, object> dic)
                 && dic != null
@@ -976,7 +975,7 @@ namespace CSharpLike
         static Dictionary<string, Dictionary<string, SInstance>> dataExs = new Dictionary<string, Dictionary<string, SInstance>>();
         public static void Set(string fileName, string strUniqueKey, SInstance csv)
         {
-            if (datas.TryGetValue(fileName, out Dictionary<string, SInstance> dic)
+            if (dataExs.TryGetValue(fileName, out Dictionary<string, SInstance> dic)
                 && dic != null)
                 dic[strUniqueKey] = csv;
         }
