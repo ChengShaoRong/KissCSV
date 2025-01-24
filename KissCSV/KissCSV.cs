@@ -13,6 +13,12 @@ using CSharpLike.Internal;
 namespace CSharpLike
 {
     /// <summary>
+    /// Mark attribute as don't load by KissCSV.
+    /// </summary>
+    public sealed class KissCSVDontLoad : Attribute
+    {
+    }
+    /// <summary>
     /// A most simple and stupid way get data from CSV(Comma-Separated Values) file with 'RFC 4180'.
     /// Read data from CSV file with class (NOT struct!).
     /// Support type in class as below ONLY:
@@ -113,6 +119,8 @@ namespace CSharpLike
             Dictionary<FieldInfo, string> fieldInfos = new Dictionary<FieldInfo, string>();
             foreach (var f in fs)
             {
+                if (Attribute.IsDefined(f, typeof(KissCSVDontLoad)))
+                    continue;
                 if (f.FieldType.IsEnum)
                 {
                     fieldInfos.Add(f, "IsEnum");
@@ -126,6 +134,8 @@ namespace CSharpLike
             Dictionary<PropertyInfo, string> propertys = new Dictionary<PropertyInfo, string>();
             foreach (var f in ps)
             {
+                if (Attribute.IsDefined(f, typeof(KissCSVDontLoad)))
+                    continue;
                 if (!f.CanRead || !f.CanWrite)
                     continue;
                 if (f.PropertyType.IsEnum)
@@ -248,6 +258,8 @@ namespace CSharpLike
             SInstance csv = type.New().value as SInstance;
             foreach (var member in csv.members)
             {
+                if (type.IsMemberDefined(member.Key, "KissCSV.KissCSVDontLoad"))
+                    continue;
                 string strShortName = GetShortName(member.Value.type.FullName);
                 if (strShortName != null)
                     memberInfos.Add(member.Key, strShortName);

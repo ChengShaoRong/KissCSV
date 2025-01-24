@@ -23,6 +23,9 @@ namespace KissCSVTest
         public List<float> testFloats;
         public Dictionary<string, int> testStringIntDicts;
         public Dictionary<int, bool> testIntBooleanDicts;
+        [KissCSVDontLoad]
+        public int testDontLoad;//This attribute won't be loaded whether exist column 'testDontLoad' in CSV file, due to mask as KissCSVDontLoad.
+        public int[] testNotSupportType;//This attribute won't be loaded due to it is not support type
     }
     class Program
     {
